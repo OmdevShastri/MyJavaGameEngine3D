@@ -17,6 +17,7 @@ public class DisplayManager {
         try {
             Display.setDisplayMode(new DisplayMode(WIDTH,HEIGHT));
             Display.create(new PixelFormat(),attribs);
+            Display.setTitle("Our first Display");
 
         } catch (LWJGLException e) {
             throw new RuntimeException(e);
