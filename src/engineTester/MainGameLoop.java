@@ -17,8 +17,8 @@ public class MainGameLoop {
 
         DisplayManager.createDisplay();
         Loader loader = new Loader();
-        Renderer renderer = new Renderer();
         StaticShader shader = new StaticShader();
+        Renderer renderer = new Renderer(shader);
 
         float [] vertices = {
                 //left bottom triANGLE
@@ -44,12 +44,12 @@ public class MainGameLoop {
 
         TexturedModel staticModel = new TexturedModel(model,new ModelTexture(loader.textureLoader("fire")));
 
-        Entity entity = new Entity(staticModel, new Vector3f(-1,0,0),0,0,0,1);
+        Entity entity = new Entity(staticModel, new Vector3f(0,0,-1),0,0,0,1);
 
         while (!Display.isCloseRequested()){
             //game logic
-            entity.increasePosition(0.002f, 0,0);
-            entity.increaseRotation(0,1,0);
+            entity.increasePosition(0, 0,-0.1f);
+            //entity.increaseRotation(0,1,0);
 
             renderer.prepare();
             //render
