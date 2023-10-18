@@ -1,7 +1,9 @@
 package engineTester;
 
+import entities.Entity;
 import models.TexturedModel;
 import org.lwjgl.opengl.Display;
+import org.lwjgl.util.vector.Vector3f;
 import renderEngine.DisplayManager;
 import renderEngine.Loader;
 import models.RawModel;
@@ -38,16 +40,21 @@ public class MainGameLoop {
                 1,0 //V3
         };
 
-        RawModel model = loader.loadToVAO(vertices, textureCoord,indices);
-        ModelTexture texture = new ModelTexture(loader.textureLoader("textuu"));
-        TexturedModel texturedModel = new TexturedModel(model,texture);
+        RawModel model = loader.loadToVAO(vertices, textureCoord, indices);
+
+        TexturedModel staticModel = new TexturedModel(model,new ModelTexture(loader.textureLoader("fire")));
+
+        Entity entity = new Entity(staticModel, new Vector3f(-1,0,0),0,0,0,1);
 
         while (!Display.isCloseRequested()){
-            renderer.prepare();
             //game logic
+            entity.increasePosition(0.002f, 0,0);
+            entity.increaseRotation(0,1,0);
+
+            renderer.prepare();
             //render
             shader.start();
-            renderer.render(texturedModel);
+            renderer.render(entity, shader);
             shader.stop();
             DisplayManager.updateDisplay();
 
