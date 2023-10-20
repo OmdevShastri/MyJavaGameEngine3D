@@ -5,16 +5,14 @@ import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 public class OBJLoader {
     public static RawModel loadObjModel(String filename, Loader loader){
-        FileReader fr =null;
+        FileReader fr;
         try {
             fr = new FileReader("res/"+filename+".obj");
         } catch (FileNotFoundException e) {
@@ -29,7 +27,7 @@ public class OBJLoader {
         List<Integer> indices = new ArrayList<>();
         float[] verticesArray;
         float[] normalsArray;
-        float[] textureArray = null;
+        float[] textureArray;
         int[] indicesArray;
         try {
             while (true){
@@ -67,8 +65,8 @@ public class OBJLoader {
 
             }
             reader.close();
-        }catch (Exception e){
-
+        }catch (Exception e) {
+            throw new RuntimeException(e);
         }
 
         verticesArray = new float[vertices.size()*3];
