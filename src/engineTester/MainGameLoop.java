@@ -10,6 +10,7 @@ import org.w3c.dom.Text;
 import renderEngine.*;
 import models.RawModel;
 import shaders.StaticShader;
+import terrains.Terrain;
 import textures.ModelTexture;
 
 import java.util.ArrayList;
@@ -104,37 +105,25 @@ public class MainGameLoop {
 //
 //        };
 
-        RawModel model = OBJLoader.loadObjModel("cube",loader);
+        RawModel model = OBJLoader.loadObjModel("tree",loader);
 
-//        TexturedModel staticModel = new TexturedModel(model,new ModelTexture(loader.textureLoader("white128")));
-//        ModelTexture texture = staticModel.getTexture();
+        TexturedModel staticModel = new TexturedModel(model,new ModelTexture(loader.textureLoader("tree")));
+        ModelTexture texture = staticModel.getTexture();
 //        texture.setShineDamper(10);
 //        texture.setReflectivity(0.2f);
 
-        //Entity entity = new Entity(staticModel, new Vector3f(0,0,-25),0,0,0,1);
-        Light light = new Light(new Vector3f(200,200,100), new Vector3f(1,1,1));
+        Entity entity = new Entity(staticModel, new Vector3f(0,0,0),0,0,0,1);
+        Light light = new Light(new Vector3f(3000,2000,2000), new Vector3f(1,1,1));
 
-        TexturedModel cubeModel = new TexturedModel(model, new ModelTexture(loader.textureLoader("white128")));
-        ModelTexture texture = cubeModel.getTexture();
-        texture.setShineDamper(10);
-        texture.setReflectivity(1);
+        Terrain terrain = new Terrain(0,0,loader, new ModelTexture(loader.textureLoader("grass")));
+        Terrain terrain2 = new Terrain(1,0,loader, new ModelTexture(loader.textureLoader("grass")));
 
         Camera camera = new Camera();
-
-        List<Entity> allCubes = new ArrayList<>();
-        Random random = new Random();
-        for (int i = 0; i < 2; i++) {
-            float x = random.nextFloat() *100-50;
-            float y = random.nextFloat() *100-50;
-            float z = random.nextFloat() *-300;
-            allCubes.add(new Entity(cubeModel, new Vector3f(x,y,z), random.nextFloat()* 180f, random.nextFloat()* 100f, 0f,1f ));
-
-        }
-
         MasterRenderer renderer = new MasterRenderer();
+
         while (!Display.isCloseRequested()){
             //game logic
-            //entity.increaseRotation(0, 0.5f,0);
+            entity.increaseRotation(0, 0.5f,0);
             camera.move();
             //entity.increaseRotation(0,1,0);
 
@@ -145,10 +134,10 @@ public class MainGameLoop {
 //            shader.loadViewMatrix(camera);
 //            renderer.render(entity, shader);
 //            shader.stop();
-            for (Entity cube :
-                    allCubes) {
-                renderer.processEntity(cube);
-            }
+            renderer.processTerrain(terrain);
+            renderer.processTerrain(terrain2);
+            renderer.processEntity(entity);
+
             renderer.render(light,camera);
             DisplayManager.updateDisplay();
 
