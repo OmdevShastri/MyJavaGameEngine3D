@@ -5,6 +5,8 @@ import entities.Entity;
 import entities.Light;
 import models.RawModel;
 import models.TexturedModel;
+import objConvertor.ModelData;
+import objConvertor.OBJFileLoader;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.util.vector.Vector3f;
 import renderEngine.DisplayManager;
@@ -25,9 +27,11 @@ public class MainGameLoop {
         DisplayManager.createDisplay();
         Loader loader = new Loader();
 
-        RawModel model = OBJLoader.loadObjModel("tree",loader);
+        ModelData data = OBJFileLoader.loadOBJ("tree");
+        //RawModel model = OBJLoader.loadObjModel("tree",loader);
+        RawModel treeModel= loader.loadToVAO(data.getVertices(), data.getTextureCoords(), data.getNormals(), data.getIndices());
+        TexturedModel staticModel = new TexturedModel(treeModel,new ModelTexture(loader.textureLoader("tree")));
 
-        TexturedModel staticModel = new TexturedModel(model,new ModelTexture(loader.textureLoader("tree")));
         TexturedModel grass = new TexturedModel(OBJLoader.loadObjModel("grassModel", loader),new ModelTexture(loader.textureLoader("grassTexture")));
         grass.getTexture().setHasTransparency(true);
         grass.getTexture().setUseFakeLighting(true);
