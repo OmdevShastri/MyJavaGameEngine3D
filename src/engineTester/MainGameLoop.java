@@ -15,6 +15,8 @@ import renderEngine.MasterRenderer;
 import renderEngine.OBJLoader;
 import terrains.Terrain;
 import textures.ModelTexture;
+import textures.TerrainTexture;
+import textures.TerrainTexturePack;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,11 +43,25 @@ public class MainGameLoop {
 //        texture.setShineDamper(10);
 //        texture.setReflectivity(0.2f);
 
-        //Entity entity = new Entity(staticModel, new Vector3f(0,0,0),0,0,0,1);
+        //Entity entity= new Entity(staticModel, new Vector3f(0,0,0),0,0,0,1);
         Light light = new Light(new Vector3f(3000,2000,2000), new Vector3f(1,1,1));
 
-        Terrain terrain = new Terrain(-1,-1,loader, new ModelTexture(loader.textureLoader("grass")));
-        Terrain terrain2 = new Terrain(0,-1,loader, new ModelTexture(loader.textureLoader("grass")));
+//        Terrain terrain = new Terrain(-1,-1,loader, new ModelTexture(loader.textureLoader("grass")));
+//        Terrain terrain2 = new Terrain(-1,0,loader, new ModelTexture(loader.textureLoader("grass")));
+//        Terrain terrain3 = new Terrain(0,-1,loader, new ModelTexture(loader.textureLoader("grass")));
+//        Terrain terrain4 = new Terrain(0,0,loader, new ModelTexture(loader.textureLoader("grass")));
+
+        //++++++++TERRAIN TEXTURE STUFF++++++++++
+        TerrainTexture backgroundTexture = new TerrainTexture(loader.textureLoader("grassy"));
+        TerrainTexture rTexture = new TerrainTexture(loader.textureLoader("dirt"));
+        TerrainTexture gTexture = new TerrainTexture(loader.textureLoader("pinkFlowers"));
+        TerrainTexture bTexture = new TerrainTexture(loader.textureLoader("path"));
+
+        TerrainTexturePack texturePack = new TerrainTexturePack(backgroundTexture,rTexture,gTexture,bTexture);
+
+        TerrainTexture blendMap = new TerrainTexture(loader.textureLoader("blendMap"));
+
+        //+++++++++++++++++++++++++++++++++++++++
 
         List<Entity> entities = new ArrayList<>();
         Random random = new Random();
@@ -54,6 +70,8 @@ public class MainGameLoop {
             entities.add(new Entity(grass, new Vector3f(random.nextFloat()*800-400,0,random.nextFloat()*-600),0,0,0,1));
             entities.add(new Entity(fern, new Vector3f(random.nextFloat()*800-400,0,random.nextFloat()*-600),0,0,0,1));
         }
+        Terrain terrain = new Terrain(0,-1,loader, texturePack, blendMap);
+        Terrain terrain2 = new Terrain(-1,-1,loader, texturePack, blendMap);
 
         Camera camera = new Camera();
         MasterRenderer renderer = new MasterRenderer();
@@ -68,6 +86,8 @@ public class MainGameLoop {
             //render
             renderer.processTerrain(terrain);
             renderer.processTerrain(terrain2);
+//            renderer.processTerrain(terrain3);
+//            renderer.processTerrain(terrain4);
             for (Entity e :
                     entities) {
                 renderer.processEntity(e);
