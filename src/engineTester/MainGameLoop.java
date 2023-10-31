@@ -3,6 +3,7 @@ package engineTester;
 import entities.Camera;
 import entities.Entity;
 import entities.Light;
+import entities.Player;
 import models.RawModel;
 import models.TexturedModel;
 import objConvertor.ModelData;
@@ -76,13 +77,19 @@ public class MainGameLoop {
         Camera camera = new Camera();
         MasterRenderer renderer = new MasterRenderer();
 
+        ModelData bunnyModelP =  OBJFileLoader.loadOBJ("stanfordBunny");
+        //RawModel model = OBJLoader.loadObjModel("tree",loader);
+        RawModel bunnyModel = loader.loadToVAO(bunnyModelP.getVertices(), bunnyModelP.getTextureCoords(), bunnyModelP.getNormals(), bunnyModelP.getIndices());
+        TexturedModel stanfordBunny = new TexturedModel(bunnyModel,new ModelTexture(loader.textureLoader("white")));
+        Player player = new Player(stanfordBunny, new Vector3f(100,0,-50),0,0,0,1);
+
         while (!Display.isCloseRequested()){
             //game logic
             //entity.increaseRotation(0, 0.5f,0);
             camera.move();
             //entity.increaseRotation(0,1,0);
-
-            //renderer.prepare();
+            player.move();
+            renderer.processEntity(player);
             //render
             renderer.processTerrain(terrain);
             renderer.processTerrain(terrain2);
