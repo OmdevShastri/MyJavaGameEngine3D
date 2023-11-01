@@ -74,21 +74,26 @@ public class MainGameLoop {
         Terrain terrain = new Terrain(0,-1,loader, texturePack, blendMap);
         Terrain terrain2 = new Terrain(-1,-1,loader, texturePack, blendMap);
 
-        Camera camera = new Camera();
         MasterRenderer renderer = new MasterRenderer();
 
-        ModelData bunnyModelP =  OBJFileLoader.loadOBJ("stanfordBunny");
+//        ModelData bunnyModelP =  OBJFileLoader.loadOBJ("stanfordBunny");
+//        //RawModel model = OBJLoader.loadObjModel("tree",loader);
+//        RawModel bunnyModel = loader.loadToVAO(bunnyModelP.getVertices(), bunnyModelP.getTextureCoords(), bunnyModelP.getNormals(), bunnyModelP.getIndices());
+//        TexturedModel stanfordBunny = new TexturedModel(bunnyModel,new ModelTexture(loader.textureLoader("white")));
+        ModelData personB =  OBJFileLoader.loadOBJ("person");
         //RawModel model = OBJLoader.loadObjModel("tree",loader);
-        RawModel bunnyModel = loader.loadToVAO(bunnyModelP.getVertices(), bunnyModelP.getTextureCoords(), bunnyModelP.getNormals(), bunnyModelP.getIndices());
-        TexturedModel stanfordBunny = new TexturedModel(bunnyModel,new ModelTexture(loader.textureLoader("white")));
+        RawModel personBlocky = loader.loadToVAO(personB.getVertices(), personB.getTextureCoords(), personB.getNormals(), personB.getIndices());
+        TexturedModel stanfordBunny = new TexturedModel(personBlocky,new ModelTexture(loader.textureLoader("playerTexture")));
+        stanfordBunny.getTexture().setUseFakeLighting(true);
         Player player = new Player(stanfordBunny, new Vector3f(100,0,-50),0,0,0,1);
-
+        Camera camera = new Camera(player);
         while (!Display.isCloseRequested()){
             //game logic
             //entity.increaseRotation(0, 0.5f,0);
-            camera.move();
+
             //entity.increaseRotation(0,1,0);
             player.move();
+            camera.move();
             renderer.processEntity(player);
             //render
             renderer.processTerrain(terrain);
