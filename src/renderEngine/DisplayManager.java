@@ -8,7 +8,7 @@ public class DisplayManager {
 
     private static final int WIDTH = 1280;
     private static final int HEIGHT = 720;
-    private static final int FPS_CAP = 120;
+    private static final int FPS_CAP = 60;
 
     private static long lastFrameTime;
     private static float delta;
@@ -34,6 +34,7 @@ public class DisplayManager {
 
     public static void updateDisplay(){
         Display.sync(FPS_CAP);
+
         Display.update();
         long currentFrameTime = getCurrentTime();
         delta = (currentFrameTime- lastFrameTime)/1000f;
