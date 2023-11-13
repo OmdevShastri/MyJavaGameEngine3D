@@ -65,14 +65,29 @@ public class MainGameLoop {
         //+++++++++++++++++++++++++++++++++++++++
 
         List<Entity> entities = new ArrayList<>();
-        Random random = new Random();
-        for (int i = 0; i < 500; i++) {
-            entities.add(new Entity(staticModel, new Vector3f(random.nextFloat()*800-400,0,random.nextFloat()*-600),0,0,0,1));
-            entities.add(new Entity(grass, new Vector3f(random.nextFloat()*800-400,0,random.nextFloat()*-600),0,0,0,1));
-            entities.add(new Entity(fern, new Vector3f(random.nextFloat()*800-400,0,random.nextFloat()*-600),0,0,0,1));
-        }
+        Random random = new Random(676452);
         Terrain terrain = new Terrain(0,-1,loader, texturePack, blendMap,"heightMap");
         Terrain terrain2 = new Terrain(-1,-1,loader, texturePack, blendMap, "heightMap");
+
+        for (int i = 0; i < 500; i++) {
+            if (i%20 ==0){
+                float x = random.nextFloat()*800-400;
+                float z = random.nextFloat()*-600;
+                float y = terrain.getHeightOfTerrain(x,z);
+                entities.add(new Entity(fern, new Vector3f(x,y,z),0,random.nextFloat()*360,0,0.9f));
+            }
+            if (i%5 == 0) {
+                float x = random.nextFloat()*800-400;
+                float z = random.nextFloat()*-600;
+                float y = terrain.getHeightOfTerrain(x,z);
+                entities.add(new Entity(grass, new Vector3f(x,y,z),0,random.nextFloat()*360,0,1));
+                x = random.nextFloat()*800-400;
+                z = random.nextFloat()*-600;
+                y = terrain.getHeightOfTerrain(x,z);
+                entities.add(new Entity(staticModel, new Vector3f(x,y,z),0,random.nextFloat()*360,0,1));
+
+            }
+        }
 
         MasterRenderer renderer = new MasterRenderer();
 
@@ -92,7 +107,7 @@ public class MainGameLoop {
             //entity.increaseRotation(0, 0.5f,0);
 
             //entity.increaseRotation(0,1,0);
-            player.move();
+            player.move(terrain);
             camera.move();
             renderer.processEntity(player);
             //render
