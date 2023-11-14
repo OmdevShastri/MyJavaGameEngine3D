@@ -99,7 +99,7 @@ public class MainGameLoop {
         //RawModel model = OBJLoader.loadObjModel("tree",loader);
         RawModel personBlocky = loader.loadToVAO(personB.getVertices(), personB.getTextureCoords(), personB.getNormals(), personB.getIndices());
         TexturedModel stanfordBunny = new TexturedModel(personBlocky,new ModelTexture(loader.textureLoader("playerTexture")));
-        stanfordBunny.getTexture().setUseFakeLighting(true);
+        //stanfordBunny.getTexture().setUseFakeLighting(true);
         Player player = new Player(stanfordBunny, new Vector3f(100,0,-50),0,0,0,1);
         Camera camera = new Camera(player);
         while (!Display.isCloseRequested()){
