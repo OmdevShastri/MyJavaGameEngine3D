@@ -44,6 +44,9 @@ public class MainGameLoop {
 //        texture.setShineDamper(10);
 //        texture.setReflectivity(0.2f);
 
+        ModelTexture fernTextureAtlas = new ModelTexture(loader.textureLoader("fern"));
+        fernTextureAtlas.setNumOfRows(2);
+
         //Entity entity= new Entity(staticModel, new Vector3f(0,0,0),0,0,0,1);
         Light light = new Light(new Vector3f(3000,2000,2000), new Vector3f(1,1,1));
 
@@ -74,7 +77,7 @@ public class MainGameLoop {
                 float x = random.nextFloat()*800-400;
                 float z = random.nextFloat()*-600;
                 float y = terrain.getHeightOfTerrain(x,z);
-                entities.add(new Entity(fern, new Vector3f(x,y,z),0,random.nextFloat()*360,0,0.9f));
+                entities.add(new Entity(fern, random.nextInt(4),new Vector3f(x,y,z),0,random.nextFloat()*360,0,0.9f));
             }
             if (i%5 == 0) {
                 float x = random.nextFloat()*800-400;
