@@ -4,11 +4,14 @@ import entities.Camera;
 import entities.Entity;
 import entities.Light;
 import entities.Player;
+import guis.GuiRenderer;
+import guis.GuiTexture;
 import models.RawModel;
 import models.TexturedModel;
 import objConvertor.ModelData;
 import objConvertor.OBJFileLoader;
 import org.lwjgl.opengl.Display;
+import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 import renderEngine.DisplayManager;
 import renderEngine.Loader;
@@ -44,8 +47,8 @@ public class MainGameLoop {
 //        texture.setShineDamper(10);
 //        texture.setReflectivity(0.2f);
 
-        ModelTexture fernTextureAtlas = new ModelTexture(loader.textureLoader("fern"));
-        fernTextureAtlas.setNumOfRows(2);
+        ModelTexture fernTextureAtlas = new ModelTexture(loader.textureLoader("fernA"));
+        fernTextureAtlas.setNumOfRows(4);
 
         //Entity entity= new Entity(staticModel, new Vector3f(0,0,0),0,0,0,1);
         Light light = new Light(new Vector3f(3000,2000,2000), new Vector3f(1,1,1));
@@ -105,6 +108,12 @@ public class MainGameLoop {
         //stanfordBunny.getTexture().setUseFakeLighting(true);
         Player player = new Player(stanfordBunny, new Vector3f(100,0,-50),0,0,0,1);
         Camera camera = new Camera(player);
+
+        List<GuiTexture> guis = new ArrayList<>();
+        GuiTexture gui = new GuiTexture(loader.textureLoader("socuwan"),new Vector2f(0.5f, 0.5f),new Vector2f(0.25f,0.25f));
+        guis.add(gui);
+        GuiRenderer guiRenderer= new GuiRenderer(loader);
+
         while (!Display.isCloseRequested()){
             //game logic
             //entity.increaseRotation(0, 0.5f,0);
@@ -122,12 +131,14 @@ public class MainGameLoop {
                     entities) {
                 renderer.processEntity(e);
             }
-
             renderer.render(light,camera);
+            guiRenderer.render(guis);
             DisplayManager.updateDisplay();
 
         }
         //shader.cleanUp();
+        guiRenderer.cleanUp();
+        renderer.cleanUp();
         loader.cleanUp();
         DisplayManager.closeDisplay();
     }

@@ -46,7 +46,7 @@ public class TerrainRenderer {
         //ModelTexture texture = terrain.getTexture();
         bindTextures(terrain);
 
-        shader.loadShineVariables(1, 0);
+        shader.loadShineVariables(1f, 0);
 //        GL13.glActiveTexture(GL13.GL_TEXTURE0);
 //        GL11.glBindTexture(GL11.GL_TEXTURE_2D,terrain.getModel().getVaoId());
     }
