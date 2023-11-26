@@ -52,6 +52,11 @@ public class MainGameLoop {
 
         //Entity entity= new Entity(staticModel, new Vector3f(0,0,0),0,0,0,1);
         Light light = new Light(new Vector3f(3000,2000,2000), new Vector3f(1,1,1));
+        List<Light> lights = new ArrayList<>();
+        lights.add(light);
+        lights.add(new Light(new Vector3f(-200,10,-200), new Vector3f(10,0,0)));
+        lights.add(new Light(new Vector3f(200,10,200), new Vector3f(0,0,10)));
+        //lights.add(new Light(new Vector3f(400,100,400), new Vector3f(0,10,0)));
 
 //        Terrain terrain = new Terrain(-1,-1,loader, new ModelTexture(loader.textureLoader("grass")));
 //        Terrain terrain2 = new Terrain(-1,0,loader, new ModelTexture(loader.textureLoader("grass")));
@@ -114,7 +119,10 @@ public class MainGameLoop {
         guis.add(gui);
         GuiRenderer guiRenderer= new GuiRenderer(loader);
 
+
         while (!Display.isCloseRequested()){
+            renderer.processTerrain(terrain);
+            renderer.processTerrain(terrain2);
             //game logic
             //entity.increaseRotation(0, 0.5f,0);
 
@@ -123,15 +131,14 @@ public class MainGameLoop {
             camera.move();
             renderer.processEntity(player);
             //render
-            renderer.processTerrain(terrain);
-            renderer.processTerrain(terrain2);
+
 //            renderer.processTerrain(terrain3);
 //            renderer.processTerrain(terrain4);
             for (Entity e :
                     entities) {
                 renderer.processEntity(e);
             }
-            renderer.render(light,camera);
+            renderer.render(lights,camera);
             guiRenderer.render(guis);
             DisplayManager.updateDisplay();
 
